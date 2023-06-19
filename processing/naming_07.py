@@ -47,29 +47,31 @@ Train_input= glob.glob("dataset/Train/Input/*.fits")
 Train_target = glob.glob("dataset/Train/Target/*.fits")
 Test_input = glob.glob("dataset/Test/Input/*.fits")
 
+logger.info(f" Train Input processing...")
 
 for file in Train_input:
+    print(file)
     filename = os.path.basename(file)
-    logger.info(f" Train Input {filename} processing...")
-
     file_num = str(filename[0:2])
     filter = "f435w"
     file_centercoord = str(filename[73:93])
-    print(file_centercoord)
     ext = ".fits"
+
     # newname = visitnum_filter_centercoord.fits
     newname = file_num + "_" + filter + "_" + file_centercoord + ext 
     dst = os.path.join(Train_input_path, newname)
-    logger.info(f"{newname} naming...")    
-    os.rename = (file, dst)
+    print(dst)
+    os.rename(file, dst)
+
+logger.info(f" Train Input processing done")
 
 if not os.path.exists("dataset/Train/Target/legacy"):
     os.mkdir("dataset/Train/Target/legacy")
 
+logger.info(f"Train Target processing...")
 
 for file in Train_target:
     filename = os.path.basename(file)
-    logger.info(f"Train Target{filename} processing...")
 
     for num in visit_nums:
         file_num = str(num)
@@ -79,15 +81,17 @@ for file in Train_target:
         # newname = visitnum_filter_centercoord.fits
         newname = file_num + "_" + filter + "_"  + file_centercoord + ext
         dst = os.path.join(Train_target_path, newname)
-        logger.info(f"{newname} naming...")
         shutil.copy(file, dst)
+
+logger.info(f"Train Target processing done")
 
 # 1개 coordinate image x visitnum 개수만틈 copy -> Target/name dir 이동
 # 같은 이미지 이름을 filter 부분만 바꿔서 변경하여 사용.
 
+logger.info(f"Test Input processing...")
+
 for file in Test_input:
     filename = os.path.basename(file)
-    logger.info(f"Test Input {filename} processing...")
 
     file_num = str(filename[0:2])
     filter = "f435w"
@@ -96,7 +100,8 @@ for file in Test_input:
     # newname = visitnum_filter_centercoord.fits
     newname = file_num + "_" + filter + "_" +file_centercoord + ext 
     dst = os.path.join(Test_input_path, newname)
-    logger.info(f"{newname} naming...")
-    os.rename = (file, dst)
+    os.rename(file, dst)
+
+logger.info(f"Test Input processing done")
 
 
